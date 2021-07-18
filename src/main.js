@@ -101,10 +101,18 @@ container.addEventListener("drop", (e) => {
   checkStatus();
 });
 let change = [];
+let tmpColor = [];
 container.addEventListener("touchstart", (e) => {
   change.push(e.srcElement.className);
+  tmpColor.push(e.target);
   console.log(change);
+  console.log(tmpColor);
+  tmpColor[0].style["border"] = "3px solid #ffff00";
   if (change.length === 2) {
+    tmpColor[0].style["border"] = "none";
+    tmpColor[1].style["border"] = "none";
+
+    tmpColor = [];
     const change1 = document.querySelector(`.${change[0]}`);
     const change2 = document.querySelector(`.${change[1]}`);
     console.log(change1, change2);
