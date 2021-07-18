@@ -67,7 +67,7 @@ function shuffle(array) {
 
 container.addEventListener("dragstart", (e) => {
   if (!isPlaying) return;
-  console.log(e);
+
   const obj = e.target;
   dragged.el = obj;
   dragged.class = obj.className;
@@ -77,7 +77,6 @@ container.addEventListener("dragover", (e) => {
   if (!isPlaying) return;
   const obj = e.target;
   e.preventDefault();
-  //   console.log(e);
 });
 container.addEventListener("drop", (e) => {
   if (!isPlaying) return;
@@ -101,7 +100,22 @@ container.addEventListener("drop", (e) => {
   }
   checkStatus();
 });
-
+let change = [];
+container.addEventListener("touchstart", (e) => {
+  change.push(e.srcElement.className);
+  console.log(change);
+  if (change.length === 2) {
+    const change1 = document.querySelector(`.${change[0]}`);
+    const change2 = document.querySelector(`.${change[1]}`);
+    console.log(change1, change2);
+    change1.removeAttribute("class");
+    change2.removeAttribute("class");
+    change1.setAttribute("class", change[1]);
+    change2.setAttribute("class", change[0]);
+    change = [];
+    checkStatus();
+  }
+});
 startButton.addEventListener("click", () => {
   setGame();
   isPlaying = true;
