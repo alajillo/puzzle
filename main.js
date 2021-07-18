@@ -17,6 +17,8 @@ function checkStatus() {
 }
 
 let isPlaying = false;
+let timeInterval = null;
+let time = 0;
 let tiles = [];
 const dragged = {
   el: null,
@@ -26,6 +28,10 @@ const dragged = {
 
 function setGame() {
   container.innerHTML = "";
+  timeInterval = setInterval(() => {
+    playTime.innerText = time;
+    time++;
+  }, 1000);
   tiles = createimageTiles();
   tiles.forEach((tile) => container.appendChild(tile));
   setTimeout(() => {
@@ -61,6 +67,7 @@ function shuffle(array) {
 
 container.addEventListener("dragstart", (e) => {
   if (!isPlaying) return;
+  console.log(e);
   const obj = e.target;
   dragged.el = obj;
   dragged.class = obj.className;
