@@ -8,7 +8,7 @@ const tileCount = 16;
 function checkStatus() {
   const currentList = [...container.children];
   const unMatchedList = currentList.filter((child, index) => {
-    return Number(child.getAttribute("data-index")) !== index;
+    return Number(child.getAttribute("index")) !== index;
   });
   if (unMatchedList.length === 0) {
     gameText.style.display = "block";
@@ -46,7 +46,7 @@ function createimageTiles() {
     .fill()
     .forEach((v, i) => {
       const li = document.createElement("li");
-      li.setAttribute("data-index", i);
+      li.setAttribute("index", i);
       li.setAttribute("draggble", "true");
       li.classList.add(`list${i}`);
       container.appendChild(li);
@@ -102,11 +102,15 @@ container.addEventListener("drop", (e) => {
 });
 let change = [];
 let tmpColor = [];
+let tmpIndex = [];
 container.addEventListener("touchstart", (e) => {
+  if (!isPlaying) return;
+
+  tmpIndex.push(e.target.attributes.index.value); //prettier-ignore
   change.push(e.srcElement.className);
   tmpColor.push(e.target);
-  console.log(change);
-  console.log(tmpColor);
+  // console.log(change);
+  // console.log(tmpColor);
   tmpColor[0].style["border"] = "3px solid #ffff00";
   if (change.length === 2) {
     tmpColor[0].style["border"] = "none";
@@ -115,12 +119,21 @@ container.addEventListener("touchstart", (e) => {
     tmpColor = [];
     const change1 = document.querySelector(`.${change[0]}`);
     const change2 = document.querySelector(`.${change[1]}`);
+    const indexChange1 = document.querySelector(`.${change[0]}`);
+    const indexChange2 = document.querySelector(`.${change[1]}`);
+    // const change1 = document.querySelector(`.${change[0]}`);
+    // const change2 = document.querySelector(`.${change[1]}`);
     console.log(change1, change2);
     change1.removeAttribute("class");
     change2.removeAttribute("class");
+    change1.removeAttribute("index");
+    change2.removeAttribute("index");
     change1.setAttribute("class", change[1]);
     change2.setAttribute("class", change[0]);
+    indexChange1.setAttribute("index", tmpIndex[1]);
+    indexChange2.setAttribute("index", tmpIndex[0]);
     change = [];
+    tmpIndex = [];
     checkStatus();
   }
 });
