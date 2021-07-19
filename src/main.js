@@ -125,6 +125,7 @@ container.addEventListener("touchstart", (e) => {
   }
 });
 startButton.addEventListener("click", () => {
+  clearInterval(timeInterval);
   setGame();
   isPlaying = true;
 });
